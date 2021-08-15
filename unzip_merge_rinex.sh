@@ -4,7 +4,7 @@ year=$1
 
 # Rinex v 2.11
 for i in base/rinex_v211/*.zip; do unzip $i -d base/rinex_v211 *${year}O; done
-./teqc -phc base/rinex_v211/*${year}O > base/rinex_v211/merged.obs
+teqc -phc base/rinex_v211/*${year}O > base/rinex_v211/merged.obs
 rm base/rinex_v211/*${year}O
 
 # Rinex v 3.03
