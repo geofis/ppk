@@ -4,7 +4,7 @@
 mkdir -p base/{real_time,rinex_v211,rinex_v303}
 mkdir -p rover
 
-if [ ! -f *.ubx ]
+if ! compgen -G "*.ubx" > /dev/null
 then
   echo ""
   echo " Couldn't find the rover files (*.ubx) in this directory."
@@ -29,7 +29,7 @@ else
   echo ""
 fi
 
-if [ ! -f *.rtcm3 ]
+if ! compgen -G "*.rtcm3" > /dev/null
 then
   echo ""
   echo " Couldn't find the base RTCM correction files (*.rtcm3). Place the RTCM"
