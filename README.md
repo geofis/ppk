@@ -11,10 +11,10 @@
 
 - Now, download and copy files of the base station (observables: in rinex v2.11, matching in time with those of the collected data; ephemeris: in rinex v3.03, whole day)
 
-- The following script unzip zipped base files and merge rinex if necessary
+- The following script unzip zipped base files and merge rinex if necessary. The first argument (e.g. 21) refers to the year of the base rinex files
 
 ```
-./unzip_merge_rinex.sh
+./unzip_merge_rinex.sh 21
 ```
 
 - The following script converts RTK-fix solutions to KML format, and also calculates the solution in PPK-mode using ppk.conf, and converts PPK-fix to KML format. The coordinates of the base may be expressed in ECEF format:
@@ -26,7 +26,7 @@
 - ...or using latitude/longitude/height format (decimal degrees and meters)
 
 ```
-./solutions.sh 1 ppk.conf l 18.461397786 -69.911323083 -9.147
+./solutions.sh 1 ublox_f9p.conf l 18.461397786 -69.911323083 -9.147
 ```
 
 - The following script deletes unzipped files that won't be needed again, to free-up some space
@@ -34,3 +34,5 @@
 ```
 ./clean.sh
 ```
+
+## Note: add the repo directory to the PATH, so scripts may be called directly (e.g. prepare.sh instead of ./prepare.sh)

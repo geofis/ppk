@@ -24,6 +24,7 @@ cd ..
 # Generate PPK solutions
 for i in rover/*.obs;\
   do
-    rnx2rtkp -o ${i/.obs/-ppk.pos} -k $conf -$basepostype $basepos1 $basepos2 $basepos3 $i base/rinex_v211/merged.obs base/rinex_v303/*MN.rnx;\
+#    rnx2rtkp -o ${i/.obs/-ppk.pos} -k $conf -$basepostype $basepos1 $basepos2 $basepos3 $i base/rinex_v211/merged.obs base/rinex_v303/*MN.rnx base/rinex_v303/*.*P;\
+    rnx2rtkp -o ${i/.obs/-ppk.pos} -k $conf -$basepostype $basepos1 $basepos2 $basepos3 $i base/rinex_v211/merged.obs base/rinex_v303/*MN.rnx base/rinex_v303/*.[0-9]*P;\
     pos2kml -q $soltype ${i/.obs/-ppk.pos};\
 done

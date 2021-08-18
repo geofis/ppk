@@ -9,14 +9,14 @@ then
   echo ""
   echo " Couldn't find the rover files (*.ubx) in this directory."
   echo " Place the rover files in this directory and run again prepare.sh,"
-  echo " or place then in the 'rover' directory."
+  echo " or place them directly in the 'rover' directory."
   echo ""
 else
   mv -i *.ubx rover
   echo ""
   echo " Now, copy the files of the base station."
   echo ""
-  echo " For this, download the base data from the base station repo, download and copy"
+  echo " To do this, download the base data from the base station repo, download and copy"
   echo ' to "base/rinex_v211" directory, the "Observables" (no ephemeris) files '
   echo ' in RINEX v 2.11 of a time-range encompassing the time of the data collected,'
   echo ' using the dataset of "Continuous 60 Min." recording with '
@@ -32,9 +32,9 @@ fi
 if ! compgen -G "*.rtcm3" > /dev/null
 then
   echo ""
-  echo " Couldn't find the base RTCM correction files (*.rtcm3). Place the RTCM"
-  echo ' correction files in this directory and run again prepare.sh, or place'
-  echo ' then in the "base/real_time" directory.'
+  echo " Couldn't find the base RTCM correction file(s) (*.rtcm3). Place the RTCM"
+  echo ' correction file(s) in the main directory and run again prepare.sh, or place'
+  echo ' it/them directly in the "base/real_time" directory.'
   echo ""
 else
   mv -i *.rtcm3 base/real_time
