@@ -18,7 +18,7 @@ basepos3=$6
 
 # Convert RTK solutions to KML and extract observations from UBX to RINEX v 3.03 format
 cd rover
-for i in *.ubx; do root_name=`echo $i | sed -E "s/(-[a-z])*([.a-z]*)//g"`; pos2kml -q $soltype -o $root_name-rtk.kml $i; convbin -v 3.03 -os -o $root_name.obs $i; done
+for i in *.ubx; do root_name=`echo $i | sed -E "s/(-[a-z])*([.a-z]*)//g"`; pos2kml -a -q $soltype -o $root_name-rtk.kml $i; convbin -v 3.03 -os -o $root_name.obs $i; done
 cd ..
 
 # Generate PPK solutions
@@ -26,5 +26,5 @@ for i in rover/*.obs;\
   do
 #    rnx2rtkp -o ${i/.obs/-ppk.pos} -k $conf -$basepostype $basepos1 $basepos2 $basepos3 $i base/rinex_v211/merged.obs base/rinex_v303/*MN.rnx base/rinex_v303/*.*P;\
     rnx2rtkp -o ${i/.obs/-ppk.pos} -k $conf -$basepostype $basepos1 $basepos2 $basepos3 $i base/rinex_v211/merged.obs base/rinex_v303/*MN.rnx base/rinex_v303/*.[0-9]*P;\
-    pos2kml -q $soltype ${i/.obs/-ppk.pos};\
+    pos2kml -a -q $soltype ${i/.obs/-ppk.pos};\
 done
