@@ -1,4 +1,38 @@
-# PPK
+# Workflow for 4-hr static PPK
+
+## Using RINEX files
+./ppk.sh \
+  -i 15 `#Time interval (in seconds) for computing solutions [15]` \
+  -c conf/ppk.conf `#PPK configuration file` \
+  -r example-rinex/rover/2022-02-25_13-26-06_GNSS-1.obs `#Rover obs data, RINEX format` \
+  -b example-rinex/base/2022-02-25_00-00-00_GNSS-1.obs `#Base obs data, RINEX format` \
+  -n example-rinex/base/2022-02-25_00-00-00_GNSS-1.nav `#Nav data, RINEX format` \
+  -f ant/AS-ANT2BCAL.atx `#Antenna calibration file` \
+  -t AS-ANT2BCAL `#Antenna type` \
+  -H 2 `#Antenna height, i.e. pole height (in meters)`
+
+## Using ZIP files
+./ppk.sh \
+  -i 15 `#Time interval (in seconds) for computing solutions [15]` \
+  -c conf/ppk.conf `#PPK configuration file` \
+  -r example-zip/rover/2022-02-25_13-26-06_GNSS-1.ubx.zip `#Rover obs data, ZIP format` \
+  -b example-zip/base/2022-02-25_00-00-00_GNSS-1.ubx.zip `#Base obs data, ZIP format` \
+  -f ant/AS-ANT2BCAL.atx `#Antenna calibration file` \
+  -t AS-ANT2BCAL `#Antenna type` \
+  -H 2 `#Antenna height, i.e. pole height (in meters)`
+
+
+## Using UBX files
+./ppk.sh \
+  -i 15 `#Time interval (in seconds) for computing solutions [15]` \
+  -c conf/ppk.conf `#PPK configuration file` \
+  -r example-ubx/rover/2022-02-25_13-26-06_GNSS-1.ubx `#Rover obs data, UBX format` \
+  -b example-ubx/base/2022-02-25_00-00-00_GNSS-1.ubx `#Base obs data, UBX format` \
+  -f ant/AS-ANT2BCAL.atx `#Antenna calibration file` \
+  -t AS-ANT2BCAL `#Antenna type` \
+  -H 2 `#Antenna height, i.e. pole height (in meters)`
+
+
 # Workflow for post-processing raw GNSS data using RTKLIB and Bash
 
 ## Example of use:

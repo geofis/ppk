@@ -1,0 +1,28 @@
+     1.4            G                                       ANTEX VERSION / SYST
+A                                                           PCV TYPE / REFANT   
+This calibration extracted from composite ngs14.atx.  See   COMMENT            
+the composite file ngs14.atx for more information.          COMMENT            
+                                                            END OF HEADER       
+                                                            START OF ANTENNA    
+AS-ANT2BCAL     NONE                                        TYPE / SERIAL NO    
+FIELD               NGS                      3    08-MAY-20 METH / BY / # / DATE
+     0.0                                                    DAZI                
+     0.0  80.0   5.0                                        ZEN1 / ZEN2 / DZEN  
+     2                                                      # OF FREQUENCIES    
+NGSRA_2149                                                  SINEX CODE          
+CONVERTED FROM RELATIVE NGS ANTENNA CALIBRATIONS            COMMENT             
+   G01                                                      START OF FREQUENCY  
+      1.26      0.07     58.44                              NORTH / EAST / UP   
+   NOAZI    0.00    0.17    0.39    0.46    0.56    0.57    0.62    0.69    0.90    1.16    1.42    1.58    1.64    1.32    0.69   -0.34   -1.67
+   G01                                                      END OF FREQUENCY    
+   G02                                                      START OF FREQUENCY  
+     -0.29      2.64     49.55                              NORTH / EAST / UP   
+   NOAZI    0.00    1.97    3.09    3.52    3.51    3.22    2.80    2.23    1.78    1.48    1.44    1.74    2.37    2.97    3.47    3.67    3.72
+   G02                                                      END OF FREQUENCY    
+   G01                                                      START OF FREQ RMS   
+      0.60      0.60      0.20                              NORTH / EAST / UP   
+   G01                                                      END OF FREQ RMS     
+   G02                                                      START OF FREQ RMS   
+      0.60      0.50      0.20                              NORTH / EAST / UP   
+   G02                                                      END OF FREQ RMS     
+                                                            END OF ANTENNA      
