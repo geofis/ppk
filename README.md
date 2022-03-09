@@ -1,6 +1,17 @@
-# Workflow for static PPK using RINEX, UBX or ZIP files, with calibrated antenna supoort
+# Workflow for static post-processing analysis(PPK), with calibrated antenna support
 
-## Using RINEX files
+`ppk.sh` is a wrapper function of RTKLIB Demo5 `rnx2rtkp` app, that performs post-processing analysis from base and rover data. The user must provide a PPK configuration file, base and rover observation files (RINEX v3, ZIP containing UBX files or UBX files directly) and at least one navigation messages file. Optionally, antenna calibration data may be provided. Requires RTKLIB Demo5 installed on the computer.
+
+    Syntax: ppk [-iftHsh] -c configuration file -r rover file -b base file [-n nav file]
+    Options:
+    i     Time interval in seconds for computing solutions [15]
+    f     Antenna calibration file
+    t     Antenna type
+    H     Antenna height in meters, i.e. pole height
+    s     Output solution format (llh;enu;xyz;nmea) [llh]
+    h     Display help
+
+## Example of use with RINEX files
 
 ```bash
 ./ppk.sh -i 15 -c conf/ppk.conf -r example-rinex/rover/2022-02-25_13-26-06_GNSS-1.obs \
@@ -9,15 +20,15 @@
   -f ant/AS-ANT2BCAL.atx -t AS-ANT2BCAL -H 2
 ```
 
-## Using ZIP files
+## Example with ZIP files with ENU as output solution format
 
 ```bash
 ./ppk.sh -i 15 -c conf/ppk.conf -r example-zip/rover/2022-02-25_13-26-06_GNSS-1.ubx.zip \
   -b example-zip/base/2022-02-25_00-00-00_GNSS-1.ubx.zip \
-  -f ant/AS-ANT2BCAL.atx -t AS-ANT2BCAL -H 2
+  -f ant/AS-ANT2BCAL.atx -t AS-ANT2BCAL -H 2 -s enu
 ```
 
-## Using UBX files
+## Example of use with UBX files
 
 ```bash
 ./ppk.sh -i 15 -c conf/ppk.conf -r example-ubx/rover/2022-02-25_13-26-06_GNSS-1.ubx \

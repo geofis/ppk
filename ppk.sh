@@ -3,9 +3,6 @@
 #  author: José Ramón Martínez Batlle, March, 7, 2022
 #  GitHub: geofis
 #  Twitter: @geografiard
-#  Performs PPK from RINEX files, ZIP containing UBX or UBX. Requires
-#  PPK configuration file, base and rover observations and at least
-#  one navigation messages file. Requires RTKLIB Demo5"
 
 ################################################################################
 # Help function                                                                #
@@ -14,25 +11,39 @@ Help()
 {
    # Display Help
    echo
-   echo "    Performs PPK from RINEX files, ZIP containing UBX or UBX. Requires"
-   echo "    PPK configuration file, base and rover observations and at least  "
-   echo "    one navigation messages file. Requires RTKLIB Demo5"
+
+   echo "    ppk.sh is a wrapper function of the RTKLIB Demo5 rnx2rtkp app, that performs"
+   echo "    post-processing analysis from base and rover data. The user must provide a"
+   echo "    configuration file, base and rover observation files (RINEX v3, ZIP "
+   echo "    containing UBX files or UBX files directly) and at least one navigation"
+   echo "    messages file. Optionally, antenna calibration data may be provided."
+   echo "    Requires RTKLIB Demo5 installed on the computer."
    echo
-   echo "    Syntax: ppk [-iftHh] -c configuration file -r rover file -b base file [-n nav file]"
+   echo "    Syntax: ppk [-iftHsh] -c configuration file -r rover file -b base file [-n nav file]"
    echo "    Options:"
+   echo "    i     Time interval in seconds for computing solutions [15]"
    echo "    i     Time interval (in seconds) for computing solutions [15]"
    echo "    f     Antenna calibration file"
    echo "    t     Antenna type"
-   echo "    H     Antenna height, i.e. pole height (in meters)"
-   echo "    s     Output solution format [llh]"
+   echo "    H     Antenna height in meters, i.e. pole height"
+   echo "    s     Output solution format (llh;enu;xyz;nmea) [llh]"
    echo "    h     Display help"
    echo
-   echo "    Example with RINEX files: ppk -i 15 -c conf/ppk.conf -r example-rinex/rover/2022-02-25_13-26-06_GNSS-1.obs \\"
-   echo "    -b example-rinex/base/2022-02-25_00-00-00_GNSS-1.obs -n example-rinex/base/2022-02-25_00-00-00_GNSS-1.nav \\"
+   echo "    Example of use with RINEX files"
+   echo "    ./ppk.sh -i 15 -c conf/ppk.conf -r example-rinex/rover/2022-02-25_13-26-06_GNSS-1.obs \\"
+   echo "    -b example-rinex/base/2022-02-25_00-00-00_GNSS-1.obs \\"
+   echo "    -n example-rinex/base/2022-02-25_00-00-00_GNSS-1.nav \\"
    echo "    -f ant/AS-ANT2BCAL.atx -t AS-ANT2BCAL -H 2"
    echo
-   echo "    Example with ZIP files: ./ppk.sh -i 15 -c conf/ppk.conf -r example-zip/2022-02-25_13-26-06_GNSS-1.ubx.zip \\"
-   echo "    -b example-zip/2022-02-25_00-00-00_GNSS-1.ubx.zip -f ant/AS-ANT2BCAL.atx -t AS-ANT2BCAL  -H 2"
+   echo "    Example with ZIP files with ENU as output solution format"
+   echo "    ./ppk.sh -i 15 -c conf/ppk.conf -r example-zip/2022-02-25_13-26-06_GNSS-1.ubx.zip \\"
+   echo "    -b example-zip/2022-02-25_00-00-00_GNSS-1.ubx.zip \\"
+   echo "    -f ant/AS-ANT2BCAL.atx -t AS-ANT2BCAL  -H 2 -s enu"
+   echo
+   echo "    Example of use with UBX files"
+   echo "    ./ppk.sh -i 15 -c conf/ppk.conf -r example-ubx/rover/2022-02-25_13-26-06_GNSS-1.ubx \\"
+   echo "    -b example-ubx/base/2022-02-25_00-00-00_GNSS-1.ubx \\"
+   echo "    -f ant/AS-ANT2BCAL.atx -t AS-ANT2BCAL -H 2"
    echo
    exit
 }
