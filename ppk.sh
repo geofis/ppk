@@ -24,6 +24,7 @@ Help()
    echo "    f     Antenna calibration file"
    echo "    t     Antenna type"
    echo "    H     Antenna height, i.e. pole height (in meters)"
+   echo "    s     Output solution format [llh]"
    echo "    h     Display help"
    echo
    echo "    Example with RINEX files: ppk -i 15 -c conf/ppk.conf -r example-rinex/rover/2022-02-25_13-26-06_GNSS-1.obs \\"
@@ -41,7 +42,7 @@ Help()
 ################################################################################
 
 # Manage arguments with flags
-while getopts ":i:c:r:b:n:f:t:H:h" opt; do
+while getopts ":i:c:r:b:n:f:t:H:s:h" opt; do
     case $opt in
         i) time_interval="$OPTARG"
         ;;
@@ -58,6 +59,8 @@ while getopts ":i:c:r:b:n:f:t:H:h" opt; do
         t) ant_type="$OPTARG"
         ;;
         H) ant_height="$OPTARG"
+        ;;
+        s) out_solformat="$OPTARG"
         ;;
         h) Help
         ;;
@@ -104,6 +107,10 @@ fi
 if [ -z $ant_height ]; then
   echo "  Antenna height (i.e. pole height): none provided"
   else echo "  Antenna height, i.e. pole height: $ant_height (meters)"
+fi
+if [ -z $out_solformat ]; then
+  echo "  Output solution format: none provided, using default (llh)"
+  else echo "  Output solution format: $out_solformat"
 fi
 
 # Variables
@@ -156,6 +163,11 @@ if [ ! -z "$ant_file" ]; then
 fi
 if [ ! -z "$ant_height" ]; then
   sed -i "s/ant1-antdelu       =.*$/ant1-antdelu       =$ant_height          # (m)/g" $tmp_conf_file
+fi
+if [ ! -z "$out_solformat" ]; then
+  sed -i "s/out-solformat      =.*$/out-solformat      =$out_solformat        # (0:llh,1:xyz,2:enu,3:nmea)/g" $tmp_conf_file
+  else
+  sed -i "s/out-solformat      =.*$/out-solformat      =llh        # (0:llh,1:xyz,2:enu,3:nmea)/g" $tmp_conf_file
 fi
 
 # Check whether dirs exist
