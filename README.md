@@ -1,4 +1,4 @@
-# Workflow for static post-processing analysis(PPK), with calibrated antenna support
+# Workflow for static post-processing analysis (PPK), with calibrated antenna support
 
 `ppk.sh` is a wrapper function of RTKLIB Demo5 `rnx2rtkp` app, that performs post-processing analysis from base and rover data. The user must provide a PPK configuration file, base and rover observation files (RINEX v3, ZIP containing UBX files or UBX files directly) and at least one navigation messages file. Optionally, antenna calibration data may be provided. Requires RTKLIB Demo5 installed on the computer.
 
