@@ -22,11 +22,11 @@ Help()
    echo "    Syntax: ppk [-iftHsh] -c configuration file -r rover file -b base file [-n nav file]"
    echo "    Options:"
    echo "    i     Time interval in seconds for computing solutions [15]"
-   echo "    i     Time interval (in seconds) for computing solutions [15]"
    echo "    f     Antenna calibration file"
    echo "    t     Antenna type"
    echo "    H     Antenna height in meters, i.e. pole height"
    echo "    s     Output solution format (llh;enu;xyz;nmea) [llh]"
+   echo "    o     Output solution static (all;single) [single]"
    echo "    h     Display help"
    echo
    echo "    Example of use with RINEX files"
@@ -40,10 +40,10 @@ Help()
    echo "    -b example-zip/2022-02-25_00-00-00_GNSS-1.ubx.zip \\"
    echo "    -f ant/AS-ANT2BCAL.atx -t AS-ANT2BCAL  -H 2 -s enu"
    echo
-   echo "    Example of use with UBX files"
+   echo "    Example of use with UBX files with ALL solutions enumerated exhaustively"
    echo "    ./ppk.sh -i 15 -c conf/ppk.conf -r example-ubx/rover/2022-02-25_13-26-06_GNSS-1.ubx \\"
    echo "    -b example-ubx/base/2022-02-25_00-00-00_GNSS-1.ubx \\"
-   echo "    -f ant/AS-ANT2BCAL.atx -t AS-ANT2BCAL -H 2"
+   echo "    -f ant/AS-ANT2BCAL.atx -t AS-ANT2BCAL -H 2 -o all"
    echo
    exit
 }
@@ -53,7 +53,7 @@ Help()
 ################################################################################
 
 # Manage arguments with flags
-while getopts ":i:c:r:b:n:f:t:H:s:h" opt; do
+while getopts ":i:c:r:b:n:f:t:H:s:o:h" opt; do
     case $opt in
         i) time_interval="$OPTARG"
         ;;
@@ -72,6 +72,8 @@ while getopts ":i:c:r:b:n:f:t:H:s:h" opt; do
         H) ant_height="$OPTARG"
         ;;
         s) out_solformat="$OPTARG"
+        ;;
+        o) out_solstatic="$OPTARG"
         ;;
         h) Help
         ;;
@@ -122,6 +124,10 @@ fi
 if [ -z $out_solformat ]; then
   echo "  Output solution format: none provided, using default (llh)"
   else echo "  Output solution format: $out_solformat"
+fi
+if [ -z $out_solstatic ]; then
+  echo "  Output solution static: none provided, using default (single)"
+  else echo "  Output solution static: $out_solstatic"
 fi
 
 # Variables
@@ -179,6 +185,11 @@ if [ ! -z "$out_solformat" ]; then
   sed -i "s/out-solformat      =.*$/out-solformat      =$out_solformat        # (0:llh,1:xyz,2:enu,3:nmea)/g" $tmp_conf_file
   else
   sed -i "s/out-solformat      =.*$/out-solformat      =llh        # (0:llh,1:xyz,2:enu,3:nmea)/g" $tmp_conf_file
+fi
+if [ ! -z "$out_solstatic" ]; then
+  sed -i "s/out-solstatic      =.*$/out-solstatic      =$out_solstatic        # (0:all,1:single)/g" $tmp_conf_file
+  else
+  sed -i "s/out-solstatic      =.*$/out-solstatic      =single        # (0:all,1:single)/g" $tmp_conf_file
 fi
 
 # Check whether dirs exist
