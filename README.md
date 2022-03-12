@@ -9,6 +9,7 @@
     t     Antenna type
     H     Antenna height in meters, i.e. pole height
     s     Output solution format (llh;enu;xyz;nmea) [llh]
+    o     Output solution static (all;single) [single]
     h     Display help
 
 ## Example of use with RINEX files
@@ -28,12 +29,12 @@
   -f ant/AS-ANT2BCAL.atx -t AS-ANT2BCAL -H 2 -s enu
 ```
 
-## Example of use with UBX files
+## Example of use with UBX files with ALL solutions enumerated exhaustively
 
 ```bash
 ./ppk.sh -i 15 -c conf/ppk.conf -r example-ubx/rover/2022-02-25_13-26-06_GNSS-1.ubx \
   -b example-ubx/base/2022-02-25_00-00-00_GNSS-1.ubx \
-  -f ant/AS-ANT2BCAL.atx -t AS-ANT2BCAL -H 2
+  -f ant/AS-ANT2BCAL.atx -t AS-ANT2BCAL -H 2 -o all
 ```
 
 # Old workflow for post-processing raw GNSS data using RTKLIB and Bash
