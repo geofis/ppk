@@ -52,6 +52,12 @@ Help()
 # Main program                                                                 #
 ################################################################################
 
+# Timestamp
+timestamp=`date +'%Y%m%dT%H%M%S'`
+
+# Log file var
+log_filename="errors-$timestamp.log"
+
 # Manage arguments with flags
 while getopts ":i:c:r:b:n:f:t:H:s:o:h" opt; do
     case $opt in
@@ -77,44 +83,62 @@ while getopts ":i:c:r:b:n:f:t:H:s:o:h" opt; do
         ;;
         h) Help
         ;;
-        \?) echo "Invalid option -$OPTARG" >&2
-        ;;
+        \?) echo "Invalid option -$OPTARG" 2>&1 | tee -a $log_filename
+        exit;;
     esac
 done
 shift $((OPTIND -1))
 
+# Check file exists
+check_file_exists () {
+  local file=$1
+  if [ ! -f $file ]; then
+   echo -e "\n  File $file not found" 2>&1 | tee -a $log_filename
+   exit 0
+  fi
+}
+
 # Arguments
 if [ -z $time_interval ]; then
-  echo "  Time interval: none provided, using default (15 seconds)"
+  echo "  Time interval: argument not provided, using default (15 seconds)"
   time_interval=15
   else echo "  Time interval: $time_interval seconds"
 fi
 if [ -z $conf_file ]; then
-  echo "  Configuration file: none provided. Exiting"
+  echo "  Configuration file: required argument not provided. Exiting" 2>&1 | tee -a $log_filename
   exit 1
-  else echo "  Configuration file: $conf_file"
+  else
+  check_file_exists $conf_file
+  echo "  Configuration file: $conf_file"
 fi
 if [ -z $rover_file ]; then
-  echo "  Rover source file: none provided. Exiting"
+  echo "  Rover source file: required argument not provided. Exiting" 2>&1 | tee -a $log_filename
   exit 1
-  else echo "  Rover source file: $rover_file"
+  else
+  check_file_exists $rover_file
+  echo "  Rover source file: $rover_file"
 fi
 if [ -z $base_file ]; then
-  echo "  Base source file: none provided. Exiting"
+  echo "  Base source file: required argument not provided. Exiting" 2>&1 | tee -a $log_filename
   exit 1
-  else echo "  Base source file: $base_file"
+  else
+  check_file_exists $base_file
+  echo "  Base source file: $base_file"
 fi
 if [ -z $nav_file ]; then
-  echo "  Navigation file: none provided directly, will try finding one within ZIP or UBX files"
-#  exit 1
-  else echo "  Navigation file: $nav_file"
+  echo "  Navigation file: argument not provided, will try finding one within ZIP or UBX files"
+  else
+  check_file_exists $nav_file
+  echo "  Navigation file: $nav_file"
 fi
 if [ -z $ant_file ]; then
-  echo "  Antenna calibration file: none provided"
-  else echo "  Antenna calibration file: $ant_file"
+  echo "  Antenna calibration file: argument not provided, using default"
+  else
+  check_file_exists $ant_file
+  echo "  Antenna calibration file: $ant_file"
 fi
 if [ -z $ant_type ]; then
-  echo "  Antenna type: none provided"
+  echo "  Antenna type: argument not provided, using default"
   else echo "  Antenna type: $ant_type"
 fi
 if [ -z $ant_height ]; then
@@ -122,17 +146,16 @@ if [ -z $ant_height ]; then
   else echo "  Antenna height, i.e. pole height: $ant_height (meters)"
 fi
 if [ -z $out_solformat ]; then
-  echo "  Output solution format: none provided, using default (llh)"
+  echo "  Output solution format: argument not, using default (llh)"
   else echo "  Output solution format: $out_solformat"
 fi
 if [ -z $out_solstatic ]; then
-  echo "  Output solution static: none provided, using default (single)"
+  echo "  Output solution static: argument not provided, using default (single)"
   else echo "  Output solution static: $out_solstatic"
 fi
 
 # Variables
 workdir=$PWD
-timestamp=`date +'%Y%m%dT%H%M%S'`
 out_file="position-$timestamp.pos"
 basedir="base"
 roverdir="rover"
@@ -194,12 +217,12 @@ fi
 
 # Check whether dirs exist
 if [ ! -d $basedir ]; then
-  echo -e "\n  No $basedir dir found. Create it and place the base data in it"
+  echo -e "\n  No $basedir dir found. Create it and place the base data in it" 2>&1 | tee -a $log_filename
   exit 1
 fi
 
 if [ ! -d $roverdir ]; then
-  echo -e "\n  No $roverdir dir found. Create it and place the rover data in it"
+  echo -e "\n  No $roverdir dir found. Create it and place the rover data in it" 2>&1 | tee -a $log_filename
   exit 1
 fi
 
@@ -208,7 +231,7 @@ check_empty_dir () {
   local dir=$1
   local n=(`ls $dir | wc -l`)
   if [ $n -eq 0 ]; then
-  echo -e "\n  No files available in $dir"
+  echo -e "\n  No files available in $dir" 2>&1 | tee -a $log_filename
   exit 1
   fi
 }
@@ -252,7 +275,7 @@ nav_files () {
   elif [ $n_rovernav -gt 0 ]; then
   echo "$rovernav"
   else
-  echo -e "\n  No navigation file in base directory or rover directory"
+  echo -e "\n  No navigation file in base directory or rover directory" 2>&1 | tee -a $log_filename
   exit 1
   fi
 }
@@ -275,7 +298,7 @@ my_rnx2rtkp () {
   local roverobs_def=$1
   local baseobs_def=$2
   local nav_def=$3
-  rnx2rtkp -k $tmp_conf_file -ti $time_interval -o $out_file $roverobs_def $baseobs_def $nav_def
+  rnx2rtkp -k $tmp_conf_file -ti $time_interval -o $out_file $roverobs_def $baseobs_def $nav_def 2>&1 | tee -a $log_filename
 }
 
 # PPK
@@ -298,4 +321,5 @@ if ls $pospat 1> /dev/null 2>&1; then
   for j in `ls *"$timestamp"*`; do cp $j $workdir/ppk-$timestamp; done
   else echo "  No position file generated. Exiting"
 fi
+
 exit
